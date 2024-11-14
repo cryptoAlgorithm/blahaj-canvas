@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Pixel Animation Canvas</title>
+
+    <link rel="stylesheet" href="index.css">
+    <script src="util.js" defer></script>
+    <script src="index.js" defer></script>
+    <script src="lcdEditor.js" defer></script>
+    <script src="imageImporter.js" defer></script>
+    <script src="exportImport.js" defer></script>
+</head>
+<body>
+<h1>BlahajCTF Lanyard Pixel Art Canvas</h1>
+
+<p><b>USAGE</b></p>
+<ol>
+    <li>Click <b>New</b> under <b>Editor</b> to create your first frame.</li>
+    <li>Let your artistic talent flow (should be self-explanatory). You can also customise backlight pixels as you wish.</li>
+    <li>Click <b>Serialise</b> under <b>Import/Export</b> and save the resultant contents.</li>
+</ol>
+
+<fieldset>
+    <legend>Preview Size (TODO)</legend>
+    <input type="radio" value="full" id="full-preview" name="p-size" checked />
+    <label for="full-preview">Full Board</label>
+    <input type="radio" value="screen" id="screen-preview" name="p-size" />
+    <label for="screen-preview">Screen Only</label>
+</fieldset>
+
+<div class="board">
+<img src="board.png" alt="">
+    <div class="led-array" id="led-array"></div>
+    <div class="glass">
+        <canvas id="screen" height="64" width="128"></canvas>
+        <!--<div class="chin"></div>-->
+    </div>
+</div>
+
+<h2>Editor</h2>
+<input type="range" min="0" max="0" value="0" class="seekbar" id="seek" disabled>
+<div class="controls">
+    <button id="play">Play</button>
+    <button id="step">Step</button>
+    <p id="frame-num">-1/0</p>
+    <p><b>Frame:</b></p>
+    <button id="new-frame">New</button>
+    <button id="dupe-frame" disabled>Duplicate</button>
+    <button id="del-frame" disabled>Delete</button>
+</div>
+<div class="editor">
+    <fieldset class="lcd">
+        <legend>LCD</legend>
+        <div class="screen-editor" id="screen-editor"></div>
+
+        <div class="controls">
+            <button id="clear-frame">Clear All</button>
+            <div>
+                <label for="box-mode">Draw box</label>
+                <input type="checkbox" name="lcd-edit-ops" id="box-mode">
+            </div>
+            <div>
+                <input type="checkbox" name="lcd-edit-ops" id="click-enable" checked>
+                <label for="click-enable">Click</label>
+            </div>
+            <div>
+                <input type="checkbox" name="lcd-edit-ops" id="drag-enable" checked>
+                <label for="drag-enable">Drag</label>
+            </div>
+            <!-- Brush -->
+            <div>
+                <span><b>Brush:</b></span>
+                <input type="radio" name="brush" id="brush-set" checked>
+                <label for="brush-set">Set</label>
+                <input type="radio" name="brush" id="brush-clear">
+                <label for="brush-clear">Clear</label>
+            </div>
+            <div>
+                <label for="thickness">Thickness (TODO)</label>
+                <input type="range" min="1" max="3" value="1" id="thickness">
+            </div>
+
+            <button id="import-img">Import Image</button>
+        </div>
+    </fieldset>
+    <fieldset class="led">
+        <legend>RGB Backlight</legend>
+        <div class="led-editor" id="led-editor">
+
+        </div>
+        <p><small>Click on an LED to edit</small></p>
+        <input type="color" value="#000000" id="led-color" disabled>
+        <label for="led-color">Color</label>
+    </fieldset>
+</div>
+<div class="editor">
+    <fieldset>
+        <legend>Configuration</legend>
+        <label for="framerate">Framerate: </label>
+        <select name="framerate" id="framerate">
+            <option value="60">60FPS</option>
+            <option value="30">30FPS</option>
+            <option value="10" selected>10FPS</option>
+            <option value="5">5FPS</option>
+        </select>
+        <small id="high-fps-warn">Hardware may not reliably meet target</small>
+    </fieldset>
+    <fieldset>
+        <legend>Import/Export</legend>
+        <label for="serialised-data">Serialised:</label>
+        <textarea id="serialised-data" placeholder="Serialised contents"></textarea>
+        <button id="export">Serialise</button>
+        <button id="import">Deserialise</button>
+    </fieldset>
+</div>
+<hr style="margin-top: 2rem;">
+<footer>
+    <p>Pixel animation canvas by Vincent Kwok</p>
+    <p>
+        <i>Works on recent Chromium browsers, untested otherwise</i><br>
+        Sorry, the UI looks terrible, but I have no time for anything better
+    </p>
+</footer>
+
+<dialog id="import-dialog">
+    <form name="image-import">
+        <input type="file" name="image">
+        <div>
+            <button value="cancel" formmethod="dialog">Cancel</button>
+            <button id="import-confirm">Import</button>
+        </div>
+    </form>
+</dialog>
+</body>
+</html>
